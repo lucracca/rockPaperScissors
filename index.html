@@ -1,0 +1,100 @@
+<html>
+<script>
+    let playerWon = false;
+    let isDraw = false;
+    let computerWon = false;
+    let playerSelection = "";
+    let computerSelection = "";
+    let playerScore = 0;
+    let computerScore = 0;
+    let isDrawScore = 0;
+
+
+
+
+    let computerPlay = () => {
+        let rand = Math.floor(Math.random() * 3);
+        return rand == 0 ? "Rock" : rand == 1 ? "Paper" : rand == 2 ? "Scissors" : "BOOGAWOOGA";
+    }
+
+    //Function that turns rOcK to Rock
+    let capitalize = (str) => str[0].toUpperCase() + str.substr(1, str.length).toLowerCase();
+
+    function setWinner(playerSelection, computerSelection) {
+        if (playerSelection == "Rock") {
+            if (computerSelection == "Rock") isDraw = true;
+            else if (computerSelection == "Paper") computerWon = true;
+            else if (computerSelection == "Scissors") playerWon = true;
+        } else if (playerSelection == "Paper") {
+            if (computerSelection == "Rock") playerWon = true;
+            else if (computerSelection == "Paper") isDraw = true;
+            else if (computerSelection == "Scissors") computerWon = true;
+        } else if (playerSelection == "Scissors") {
+            if (computerSelection == "Rock") computerWon = true;
+            else if (computerSelection == "Paper") playerWon = true;
+            else if (computerSelection == "Scissors") isDraw = true;
+        }
+    }
+
+    function resetRound(playerWon, isDraw, computerWon, playerSelection, computerSelection) {
+        playerWon = false;
+        isDraw = false;
+        computerWon = false;
+
+        playerSelection = "";
+        computerSelection = "";
+    }
+
+
+    function displayResults(playerSelection, computerSelection) {
+        console.log("You chose " + playerSelection + ".");
+        console.log("The computer chose " + computerSelection + ".");
+
+        if (playerWon) console.log("You won! " + playerSelection + " beats " + computerSelection + "!");
+        else if (computerWon) console.log("You lost! " + playerSelection + " loses to " + computerSelection + "!");
+        else if (isDraw) console.log("It's a draw! " + playerSelection + " does nothing to " + computerSelection + "!");
+        else console.log("Something went wrong.");
+    }
+
+    function playRound() {
+        resetRound(playerWon, isDraw, computerWon, playerSelection, computerSelection);
+
+        playerSelection = capitalize(prompt("Rock, Paper, or Scissors?"));
+        computerSelection = computerPlay();
+
+        setWinner(playerSelection, computerSelection);
+        displayResults(playerSelection, computerSelection);
+
+    }
+
+    let updateScore = () =>
+        playerWon ? ++playerScore :
+        computerWon ? ++computerScore :
+        isDraw ? ++isDrawScore :
+        console.log("Something went wrong while updating the score");
+
+
+
+    function displayScore() {
+        console.log("Player: " + playerScore + "     Computer: " + computerScore + "     Draw: " + isDrawScore);
+    }
+
+    function loopRound(rounds) {
+        for (i = 1; i <= rounds; i++) {
+            console.log("       Round " + i);
+            playRound();
+            updateScore();
+            displayScore();
+            console.log("");
+        }
+
+
+    }
+
+
+
+    //MAIN
+    loopRound(3);
+</script>
+
+</html>
